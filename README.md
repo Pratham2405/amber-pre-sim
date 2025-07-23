@@ -25,3 +25,8 @@ Main parameter file which stores all the numerical constants, pparameters catego
 #### `.frcmod`
 Same format as `.dat` but for modifying parameters, especially used for non-standard residues, ligands, metal ions etc.
 > Parameters written in `.frcmod` overwrite the ones written in `.dat` files.
+#### `.lib`
+Stores residue topology template in OFF(Object File Format - [What is OFF?]) and carries the following information:
+1. Connection information for linking residues.
+2. Partial charge assignment for each atom.
+3. Complete residue definition with atom names, types and connectivity within residue.
