@@ -84,7 +84,9 @@ It is important to know the bounds of our knowledge when starting out, and to th
 ### Steps of the Workflow
 #### Protein Preparation
 #### Ligand Preparation
+
 #### LEaP
+[Input Files Required -> Explanation of Arguments]
 #### Minimisation
 #### Heating(Thermalisation)
 #### Equilibriation
