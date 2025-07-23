@@ -86,7 +86,7 @@ It is important to know the bounds of our knowledge when starting out, and to th
 #### Ligand Preparation
 
 #### LEaP
-[Input Files Required -> Explanation of Arguments]
+[Input Files Required -> Explanation of Arguments -> Output File and what they carry]
 #### Minimisation
 #### Heating(Thermalisation)
 #### Equilibriation
