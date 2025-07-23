@@ -19,3 +19,5 @@ Some usual components of the force fields are as follows:
 - Fixed partial charges instead of assigning them dynamically.
 
 ### Structure of Force Field Files
+The force field is stored in `.dat`, `.frcmod` and `.lib` files:
+#### `.dat`
