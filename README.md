@@ -21,4 +21,7 @@ Some usual components of the force fields are as follows:
 ### Structure of Force Field Files
 The force field is stored in `.dat`, `.frcmod` and `.lib` files:
 #### `.dat`
-;
+Main parameter file which stores all the numerical constants, pparameters categorised into MASS, BOND, ANGLE, DIHEDTRAL(torsional) and NONBOND sections.
+#### `.frcmod`
+Same format as `.dat` but for modifying parameters, especially used for non-standard residues, ligands, metal ions etc.
+> Parameters written in `.frcmod` overwrite the ones written in `.dat` files.
