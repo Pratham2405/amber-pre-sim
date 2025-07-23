@@ -49,4 +49,9 @@ It has the following output files:
 
 #### sander/pmemd
 These are the functions which carry out the simulations and the dynamic calculations. There are many kinds of simulations you can carry out with sander:
-##### Minimisation
+1. Minimisation
+When water molecules and ions are added to the system, they are simply arranged randomly without accounting for any interactions and minimum distance between molecules; this needs to be corrected such that the solvent and ions acquire a relaxed and appropriately-spced configuration. Moreover, you are bound to receive many warnings from the `leap.log` file about gaps and improper contacts within the protein; minimisation also allows the protein to correct these improper contacts.
+2. Heating
+3. Equilibriation
+[Para about Equilibriation]
+4. Production 
