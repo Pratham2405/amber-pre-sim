@@ -33,6 +33,12 @@ Stores residue topology template in OFF(Object File Format - [What is OFF?]) and
 3. Complete residue definition with atom names, types and connectivity within residue.
 [Image of .lib file sreenshot]
 
+#### Different types of Force Fields in AMBER
+[Information from the AMBER manual about force fields(brief-one or two lines)]
+1. ff19sb
+2. ff14sb
+3. gaff
+4. olaf
 ### Important functions in AMBER
 #### LEaP
 Our standard structure files like `.pdb` or `.mol2` cannot be used directly by AMBER since they do not contain crucial data required for implementing an MD simulation. We have already discussed that an MD simulation requires force field files because that is what leads to force calculations - the 'dynamic' end of any MD simulation. However, even with this force field data at our disposal, we need a function to map those parameters to each atom of the protein/ligand of interest, enabling the force-computing functions(sander/pmemd) downstream with the right set of force-field parameters, connectivity(both bonded and non-bonded) and partial charges, such that accurate simulations become a natural result: LEaP is that function of AMBER. A very intuitive tutorial by Pengfei Li and David Cerutti[https://ambermd.org/tutorials/pengfei/index.php] might be of help to understand the fundamentals of LEaP in more detail.
@@ -52,6 +58,34 @@ These are the functions which carry out the simulations and the dynamic calculat
 1. Minimisation
 When water molecules and ions are added to the system, they are simply arranged randomly without accounting for any interactions and minimum distance between molecules; this needs to be corrected such that the solvent and ions acquire a relaxed and appropriately-spced configuration. Moreover, you are bound to receive many warnings from the `leap.log` file about gaps and improper contacts within the protein; minimisation also allows the protein to correct these improper contacts.
 2. Heating
+[Para about Heating]
 3. Equilibriation
 [Para about Equilibriation]
 4. Production 
+[Para about Production]
+
+#### `reduce`
+[Para about reduce]
+
+#### `pdb4amber`
+[Para about pdb4amber]
+
+#### `ambpdb`
+[Para about ambpdb]
+
+### That which we won't cover in this repository
+It is important to know the bounds of our knowledge when starting out, and to that effect, the following will not be discussed here and the reader is referred to primary sources about them:
+1. Non-standard residues encountered in protein
+2. Non-standard ligands covered in the [Corrections required]
+
+### Overall Workflow
+[Image of the flowchart]
+
+### Steps of the Workflow
+#### Protein Preparation
+#### Ligand Preparation
+#### LEaP
+#### Minimisation
+#### Heating(Thermalisation)
+#### Equilibriation
+#### Production
