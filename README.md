@@ -11,6 +11,11 @@ Some usual components of the force fields are as follows:
 #### Angle 
 #### Torsional Rotation
 #### Non-bonded Interactions
+[The parameter sets for different atoms are determined by various experimental techniques to ensure accurate predictions which are closer to reality - Raman spectroscopy...]
+### Approximations in MD Simulations:
+- Classical Mechanics is considered where atoms are approximated to point particles and newtonian mechanics is only considered.
+- Only pairwise interactions are considered.
+- Simple harmonic motion for bonds and angles considered.
+- Fixed partial charges instead of assigning them dynamically.
 
-
-
+### Structure of Force Field Files
