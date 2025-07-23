@@ -20,13 +20,13 @@ Some usual components of the force fields are as follows:
 
 ### Structure of Force Field Files
 The force field is stored in `.dat`, `.frcmod` and `.lib` files:
-#### `.dat`
+##### `.dat`
 Main parameter file which stores all the numerical constants, pparameters categorised into MASS, BOND, ANGLE, DIHEDRAL(torsional) and NONBOND sections.
 [Image of .dat file screenshot]
-#### `.frcmod`
+##### `.frcmod`
 Same format as `.dat` but for modifying parameters, especially used for non-standard residues, ligands, metal ions etc.
 > Parameters written in `.frcmod` overwrite the ones written in `.dat` files.
-#### `.lib`
+##### `.lib`
 Stores residue topology template in OFF(Object File Format - [What is OFF?]) and carries the following information:
 1. Connection information for linking residues.
 2. Partial charge assignment for each atom.
@@ -37,4 +37,16 @@ Stores residue topology template in OFF(Object File Format - [What is OFF?]) and
 #### LEaP
 Our standard structure files like `.pdb` or `.mol2` cannot be used directly by AMBER since they do not contain crucial data required for implementing an MD simulation. We have already discussed that an MD simulation requires force field files because that is what leads to force calculations - the 'dynamic' end of any MD simulation. However, even with this force field data at our disposal, we need a function to map those parameters to each atom of the protein/ligand of interest, enabling the force-computing functions(sander/pmemd) downstream with the right set of force-field parameters, connectivity(both bonded and non-bonded) and partial charges, such that accurate simulations become a natural result: LEaP is that function of AMBER. A very intuitive tutorial by Pengfei Li and David Cerutti[https://ambermd.org/tutorials/pengfei/index.php] might be of help to understand the fundamentals of LEaP in more detail.
 [Image from the tutorial]
-In summary, LEaP is the central preparatory program in AMBER which collates input structure files(`.pdb` and `.mol2`) and force field files(`.dat`, `.lib` and `.frcmod`) to make a complete description of molecules ready for 
+In summary, LEaP is the central preparatory program in AMBER which collates input structure files(`.pdb` and `.mol2`) and force field files(`.dat`, `.lib` and `.frcmod`) to make a complete description of molecules ready for dynamic calculations.
+It has the following output files:
+1. Topology files(`.prmtop`)
+  - Contain complete molecular connectivity information(bonded and non-bonded)
+  - All force-field parameters(bonds, angles, dihedrals, non-bonded terms)
+  - Atom Types and Charges
+2. Coordinate Files(`.inpcrd`,`.rst7`)
+  - Atomic Coordinates
+  - Box dimensions(for periodic boundary conditions, `ntb=1`)
+
+#### sander/pmemd
+These are the functions which carry out the simulations and the dynamic calculations. There are many kinds of simulations you can carry out with sander:
+##### Minimisation
