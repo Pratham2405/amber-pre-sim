@@ -74,7 +74,7 @@ When water molecules and ions are added to the system, they are simply arranged 
 [Para about ambpdb]
 
 ### That which we won't cover in this repository
-It is important to know the bounds of our knowledge when starting out, and to that effect, the following will not be discussed here and the reader is referred to primary sources about them:
+It is important to know the bounds of our knowledge when starting out, and to that effect, the following will not be discussed here and the reader is referred to more primary sources:
 1. Non-standard residues encountered in protein
 2. Non-standard ligands covered in the [Corrections required]
 
@@ -83,6 +83,9 @@ It is important to know the bounds of our knowledge when starting out, and to th
 
 ### Steps of the Workflow
 #### Protein Preparation
+Protein PDB files have many artifacts which make them inadequate inputs to AMBER, some of them are as follows:
+1. Irrelevant lines like ANISOU and CONECT.
+2. Gaps and improper 
 #### Ligand Preparation
 
 #### LEaP
