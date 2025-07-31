@@ -86,15 +86,15 @@ $pV = Nk_BT + \frac{1}{3} \left\langle \sum_{i=1}^N \mathbf{r}_i \cdot \mathbf{F
 
 All barostats use this fundamnental equation to convert microscopic forces and system variables to compute macroscopic pressure of the system. The barostats differ by how much complexity(tensor pressure accounts for anisotropic stresses like shear stress on the box) they allow in pressure consideration, how often they compute the virial pressure, how they respond to pressure fluctuations from the target pressure and how they introduce changes to box volume and atom coordinates. If you have had a long, stable NVT in your heating step, it's admissable to skip the NVT equilibriation and go for NPT equilibriation with decreasing `restraint_wt`.
 #### Relevant sander parameters
--**`ntb`**: 
+- **`ntb`**: 
   -`=1`: constant volume condition(NVT).
   -`=2`: constant pressure condition(NPT); allows the box to change the dimensions
--**`ntt`**: Thermostat selection
+- **`ntt`**: Thermostat selection
   -`=1`: Berendsen
   -`=2`: Andersen
   -`=3`: Langevin
   -`=4`: Nose-Hoover
--**`ntp`**: Barostat selection
+- **`ntp`**: Barostat selection
   -`=0`: No pressure coupling(NVT)
   -`=1`: Berendsen 
   -`=2`: Monte-Carlo 
