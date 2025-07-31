@@ -252,7 +252,7 @@ Analyzes a MOL2 file’s atom types and bond connectivity to identify missing GA
 ---
 
 ### Overall Workflow
-[Image of the flowchart]
+![Overall Flowchart](Overall_Flowchart.png)
 
 ---
 
