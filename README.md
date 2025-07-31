@@ -186,7 +186,7 @@ obabel -isdf 0.160_MD.sdf -opdb -O 0.160_MD.pdb
 ```
 sed 's/UNL/LIG/g' 0.160_MD.pdb | grep -E '^HETATM' > 0.160_MD_clean.pdb
 ```
-This command renames the `UNL` lines to `LIG`, pipes the output to next command, which then filters all the `HETATM` lines and copy them to a new pdb file. You might want to preserve the `CONECT` records for inferred connectivity. In that case, you might want to replace `HETATM` with `HETATM|CONECT`. However, from experience, antechamber is quite good at inferring connectivity provided all the H are provided.
+This command renames the `UNL` lines to `LIG`, pipes the output to next command, which then filters all the `HETATM` lines and copy them to a new pdb file. You might want to preserve the `CONECT` records for inferred connectivity. In that case, you might want to replace `HETATM` with `(HETATM|CONECT)`. However, from experience, antechamber is quite good at inferring connectivity provided all the H are provided.
 - Obabel, antechamber and reduce are all tools capable of adding hydrogens to a ligand. However, from experience, these tools can't add H even if there is one other H in the ligand already. To overcome this challenge, we can remove all H atoms from the ligand and then add them again(I prefer Obabel for addition at required pH):
 ```
 obabel -ipdb 0.160_MD_clean.pdb -opdb -O 0.160_MD_noH.pdb -d
