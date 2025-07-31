@@ -43,7 +43,7 @@ Generally, minimisation is carried out in 2 steps:
 1. **Restrained Minimisation(`ntr=1`)**: It is advisable to restrain the protein-ligand complex for the first minimisation run. This is useful because we don't need the protein to undergo drastic changes in its backbone structure due to the effects of the solvent first because the solvent itself has not been minimised and just packed into the solvent box, facing steric clashes among itself. All of this can lead to drastic minimisation steps which might move the protein atoms more than is required for minimisation.
 AMBER applies a harmonic restraint term to the restrained atoms in the form of a quadratic penalty term which penalises deviation of atoms from their initial coordinates($r_0$).
 
-        $E_{\text{restraint}} = \sum_{\text{i}} (K/2)\(r_{i} - r_{i,0})^{2}$
+ $E_{\text{restraint}} = \sum_{\text{i}} (K/2)\(r_{i} - r_{i,0})^{2}$
 
 2 sander parameters are crucial when carrying out restrained minimisation(`ntr=1`):
 - `restraint_wt`: It is equivalent to `K` in the above equation and determines the strength of penalty. Described in kcal/molÅ^2 and ranges from 5-10(weak) to 20-50(moderate) and strong(100-500).
