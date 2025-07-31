@@ -67,10 +67,10 @@ $m \frac{d^2 \mathbf{r}}{dt^2} = - \gamma \frac{d\mathbf{r}}{dt} + \mathbf{F}(\m
 #### Implementation in AMBER(Fluctuation-Dissipation Theorem)
 The thermal kick has been defined as follows:
 
-$\langle R_{\alpha}(t)\, R_{\beta}(t') \rangle = 2\gamma k_B T\, \delta_{\alpha\beta} \delta(t-t')$
+$\langle R_{\alpha}(t)\, R_{\beta}(t') \rangle = 2\gamma k_B T\ \delta_{\alpha\beta} \delta(t-t')$
 
 The Kronecker-Delta term tells and the Dirac Delta function imply that the expected/average value of R(t) has no relation with [Equation here]. Which, in essence, means that the thermal impulses/pushes/kicks are completely random, emulating molecular collisions.
-Moreover, the Random force increases with T, $m_i$(heavier atoms need stronger pushes) and $/gamma_i$, the collision frequency, which decides the frequency of introduction of the kicks. It is also called coupling constant, since it also measures how affected/coupled is the system with the thermodynamic bath. 
+Moreover, the Random force increases with T, $m_i$(heavier atoms need stronger pushes) and $\gamma_{i}$, the collision frequency, which decides the frequency of introduction of the kicks. It is also called coupling constant, since it also measures how affected/coupled is the system with the thermodynamic bath. 
 It is advisable to heat the system with a restraint on the protein-ligand complex to prevent from the protein changing its structure too much.
 
 #### Relevant sander parameters
@@ -89,18 +89,18 @@ $pV = Nk_BT + \frac{1}{3} \left\langle \sum_{i=1}^N \mathbf{r}_i \cdot \mathbf{F
 All barostats use this fundamnental equation to convert microscopic forces and system variables to compute macroscopic pressure of the system. The barostats differ by how much complexity(tensor pressure accounts for anisotropic stresses like shear stress on the box) they allow in pressure consideration, how often they compute the virial pressure, how they respond to pressure fluctuations from the target pressure and how they introduce changes to box volume and atom coordinates. If you have had a long, stable NVT in your heating step, it's admissable to skip the NVT equilibriation and go for NPT equilibriation with decreasing `restraint_wt`.
 #### Relevant sander parameters
 - **`ntb`**: 
-  -`=1`: constant volume condition(NVT).
-  -`=2`: constant pressure condition(NPT); allows the box to change the dimensions
+  - `=1`: constant volume condition(NVT).
+  - `=2`: constant pressure condition(NPT); allows the box to change the dimensions
 - **`ntt`**: Thermostat selection
-  -`=1`: Berendsen
-  -`=2`: Andersen
-  -`=3`: Langevin
-  -`=4`: Nose-Hoover
+  - `=1`: Berendsen
+  - `=2`: Andersen
+  - `=3`: Langevin
+  - `=4`: Nose-Hoover
 - **`ntp`**: Barostat selection
-  -`=0`: No pressure coupling(NVT)
-  -`=1`: Berendsen 
-  -`=2`: Monte-Carlo 
-  -`=3`: Parinello-Rahman
+  - `=0`: No pressure coupling(NVT)
+  - `=1`: Berendsen 
+  - `=2`: Monte-Carlo 
+  - `=3`: Parinello-Rahman
 
 ### Production
 The production run is when the actual 'simulation' takes place and Newton's equations of motion are solved for the force-field along with verlet increments in coordinates and velocity.
