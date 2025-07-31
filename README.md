@@ -11,19 +11,13 @@ A Force Field therefore refers to the functional form and the parameter sets use
 Some usual components of the force fields are as follows:
 
 #### Bond Stretching  
-$
-E_{\text{bond}} = \sum_{\text{bonds}} K_{b}\(r - r_{0})^{2}
-$
+$E_{\text{bond}} = \sum_{\text{bonds}} K_{b}\(r - r_{0})^{2}$
 
 #### Angle  
-$
-E_{\text{angle}} = \sum_{\text{angles}} K_{\theta}\(\theta - \theta_{0})^{2}
-$
+$E_{\text{angle}} = \sum_{\text{angles}} K_{\theta}\(\theta - \theta_{0})^{2}$
 
 #### Torsional Rotation  
-$
-E_{\text{torsion}} = \sum_{\text{torsions}} \frac{V_{n}}{2}\\left[1 + \cos(n\phi - \gamma)\right]
-$
+$E_{\text{torsion}} = \sum_{\text{torsions}} \frac{V_{n}}{2}\\left[1 + \cos(n\phi - \gamma)\right]$
 
 #### Non-bonded Interactions  
 $E_{\text{nonbond}} = \sum_{i<j} \left[ \epsilon_{ij} \left( \left(\frac{R_{\min,ij}}{r_{ij}}\right)^{12} - 2 \left(\frac{R_{\min,ij}}{r_{ij}}\right)^6 \right) + \frac{q_i q_j}{4 \pi \epsilon_0 r_{ij}} \right]$
