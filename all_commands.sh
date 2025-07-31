@@ -32,5 +32,7 @@ antechamber -i 0.160_MD.mol2 -fi mol2 -o 0.160_MD.prepi -fo prepi
 tleap -f leap.in > leap.log
 
 #Commands for Minimisation
+pmemd.MPI -O -i min_restrained.in -o min1.out -p system.prmtop -c system.inpcrd -r min1.rst -x min1.nc -inf min1.mdinfo -ref system.inpcrd
+memd.MPI -O -i min_unrestrained.in -o min2.out -p system.prmtop -c min1.rst -r min2.rst -x min2.nc -inf min2.mdinfo -ref min1.rst
 
 #Commands for Post-minimisation runs
