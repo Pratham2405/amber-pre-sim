@@ -34,7 +34,7 @@ Preparation protocol and production scripts for simulating Protein-Ligand Comple
     - [ambpdb](#ambpdb)
     - [antechamber](#antechamber)
     - [parmchk2](#parmchk2)
-8. [Overall Workflow (Flowchart Reference)](#overall-workflow-flowchart-reference)
+8. [Overall Workflow](#overall_workflow)
 9. [That which we won't cover in this repository](#that-which-we-wont-cover-in-this-repository)
 10. [Steps of the Workflow](#steps-of-the-workflow)
     - [Protein Preparation](#protein-preparation)
@@ -43,8 +43,8 @@ Preparation protocol and production scripts for simulating Protein-Ligand Comple
     - [Minimisation](#minimisation-1)
     - [Post-Minimisation](#post-minimisation)
     - [Post-Production Analysis](#post-production-analysis)
-    - [Tools Used in this Protocol](#tools-used-in-this-protocol)
-    - [Citations of Tools and Softwares](#citations)
+11. [Tools Used in this Protocol](#tools-used-in-this-protocol)
+12. [Citations of Tools and Softwares](#citations)
 
 ## Introduction to AMBER & MD Simulations
 ### Objectives of an MD Simulation
