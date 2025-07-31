@@ -66,14 +66,16 @@ $m \frac{d^2 \mathbf{r}}{dt^2} = - \gamma \frac{d\mathbf{r}}{dt} + \mathbf{F}(\m
 
 #### Implementation in AMBER(Fluctuation-Dissipation Theorem)
 The thermal kick has been defined as follows:
-[Equation here]
+
+$\langle R_{\alpha}(t)\, R_{\beta}(t') \rangle = 2\gamma k_B T\, \delta_{\alpha\beta} \delta(t-t')$
+
 The Kronecker-Delta term tells and the Dirac Delta function imply that the expected/average value of R(t) has no relation with [Equation here]. Which, in essence, means that the thermal impulses/pushes/kicks are completely random, emulating molecular collisions.
 Moreover, the Random force increases with T, $m_i$(heavier atoms need stronger pushes) and $/gamma_i$, the collision frequency, which decides the frequency of introduction of the kicks. It is also called coupling constant, since it also measures how affected/coupled is the system with the thermodynamic bath. 
 It is advisable to heat the system with a restraint on the protein-ligand complex to prevent from the protein changing its structure too much.
 
 #### Relevant sander parameters
-**`ntt`**: Thermostat selection.
-**gamma_ln**: Collision Frequency(default = 2). Lower values take more time to reach T0 but give more realistic behaviour.
+- **`ntt`**: Thermostat selection.
+- **gamma_ln**: Collision Frequency(default = 2). Lower values take more time to reach T0 but give more realistic behaviour.
 
 ### Equilibration
 
