@@ -143,8 +143,8 @@ Analyzes a MOL2 file’s atom types and bond connectivity to identify missing GA
 
 ### That which we won't cover in this repository
 It is important to know the bounds of our knowledge when starting out, and to that effect, the following will not be discussed here and the reader is referred to more primary sources:
-1. Non-standard residues encountered in protein
-2. Non-standard ligands covered in the [Corrections required]
+1. Non-standard residues encountered in protein. These would require custom preparation using parmchk2 and antechamber
+2. Systems with more than one ligand, multiple bound small molecules, or complex environments (e.g., cofactors, substrates, and ions together) are not addressed.
 
 ### Steps of the Workflow
 #### Protein Preparation
