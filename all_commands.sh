@@ -30,3 +30,7 @@ antechamber -i 0.160_MD.mol2 -fi mol2 -o 0.160_MD.prepi -fo prepi
 
 #Run leap.in
 tleap -f leap.in > leap.log
+
+#Commands for Minimisation
+
+#Commands for Post-minimisation runs
