@@ -62,7 +62,7 @@ This increase of temperature is achieved by the use of thermostats like Berendse
 When a system of molecules is subjected to a heat bath, it turns energy in the form of KE to molecules of the system. To impart KE in computational terms is like trying to emulate this phenomena. Langevin thermostat does this by choosing a subset of atoms randomly and gives them a 'push'(Random force simulating transfer of KE from heat bath) and a dissipation force(similar to friction/damping) which balances the the kicks, thus leading to temperature stabilisation eventually.
 Following equation defines the Langevin Dynamics:
 
-[Equation here]
+$m \frac{d^2 \mathbf{r}}{dt^2} = - \gamma \frac{d\mathbf{r}}{dt} + \mathbf{F}(\mathbf{r}) + \mathbf{R}(t)$
 
 #### Implementation in AMBER(Fluctuation-Dissipation Theorem)
 The thermal kick has been defined as follows:
@@ -82,7 +82,7 @@ The step of equilibriation is to make the system converge to a stable temperatur
 #### Implementation in AMBER
 It is generally carried out by an initial NVT(using a thermostat just like in thermalisation but `tempi` and `temp0` are equal) followed by a series of NPT runs with decreasing `restraint_wt`. NPT is carried out using a thermostat and a barostat(Pressure coupling) together like Monte Carlo, Parinello-Rahman and Berendsen. These work by adjusting the volume of the system under control pressure. The system's instantaneous pressure is calculated by the virial equation:
 
-[Equation here]
+$pV = Nk_BT + \frac{1}{3} \left\langle \sum_{i=1}^N \mathbf{r}_i \cdot \mathbf{F}_i \right\rangle$
 
 All barostats use this fundamnental equation to convert microscopic forces and system variables to compute macroscopic pressure of the system. The barostats differ by how much complexity(tensor pressure accounts for anisotropic stresses like shear stress on the box) they allow in pressure consideration, how often they compute the virial pressure, how they respond to pressure fluctuations from the target pressure and how they introduce changes to box volume and atom coordinates. If you have had a long, stable NVT in your heating step, it's admissable to skip the NVT equilibriation and go for NPT equilibriation with decreasing `restraint_wt`.
 #### Relevant sander parameters
