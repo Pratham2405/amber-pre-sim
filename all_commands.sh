@@ -36,3 +36,11 @@ pmemd.MPI -O -i min_restrained.in -o min1.out -p system.prmtop -c system.inpcrd 
 memd.MPI -O -i min_unrestrained.in -o min2.out -p system.prmtop -c min1.rst -r min2.rst -x min2.nc -inf min2.mdinfo -ref min1.rst
 
 #Commands for Post-minimisation runs
+pmemd.MPI -O -i heat.in -o heat.out -p system.prmtop -c min2.rst -r heat.rst -x heat.nc -inf mdinfo -ref min2.rst
+pmemd.MPI -O -i eq1.in -o eq1.out -p system.prmtop -c heat.rst -r eq1.rst -x eq1.nc -inf mdinfo -ref heat.rst
+pmemd.MPI -O -i eq2.in -o eq2.out -p system.prmtop -c eq1.rst -r eq2.rst -x eq2.nc -inf mdinfo -ref eq1.rst
+pmemd.MPI -O -i eq3.in -o eq3.out -p system.prmtop -c eq2.rst -r eq3.rst -x eq3.nc -inf mdinfo -ref eq2.rst
+pmemd.MPI -O -i eq4.in -o eq4.out -p system.prmtop -c eq3.rst -r eq4.rst -x eq4.nc -inf mdinfo -ref eq3.rst
+pmemd.MPI -O -i eq5.in -o eq5.out -p system.prmtop -c eq4.rst -r eq5.rst -x eq5.nc -inf mdinfo -ref eq4.rst
+pmemd.MPI -O -i eq.in -o eq.out -p system.prmtop -c eq5.rst -r eq.rst -x eq.nc -inf mdinfo -ref eq5.rst
+pmemd.MPI -O -i prod.in -o prod.out -p system.prmtop -c eq.rst -r prod.rst -x prod.nc -inf mdinfo
