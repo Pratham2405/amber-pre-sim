@@ -32,23 +32,76 @@ The parameter sets for different atoms are determined by various experimental te
 - Fixed partial charges instead of assigning them dynamically.
 
 ### Minimisation
+Incremental movement of the atoms under the influence of the gradient of Potential Energy(PE) _in vacuo_ in search of a global minima of PE.
 #### Rationale behind Minimisation
+There are several reasons why it makes sense to minimise your system:
+1. PDBs have structural artifacts like atomic clashes, steric overlap and unrealistic bond lengths which may lead to unrealistic potential energies and might crash the simulation.
+2. Steric clashes of non-bonded atoms can lead to unusually high Van der Waals repulsion. 
+3. Provides a reasonable starting value of PE for later MD runs.
 #### Implementation in AMBER
-#### Relevant sander parameters
+Generally, minimisation is carried out in 2 steps:
+1. **Restrained Minimisation(`ntr=1`)**: It is advisable to restrain the protein-ligand complex for the first minimisation run. This is useful because we don't need the protein to undergo drastic changes in its backbone structure due to the effects of the solvent first because the solvent itself has not been minimised and just packed into the solvent box, facing steric clashes among itself. All of this can lead to drastic minimisation steps which might move the protein atoms more than is required for minimisation.
+AMBER applies a harmonic restraint term to the restrained atoms in the form of a quadratic penalty term which penalises deviation of atoms from their initial coordinates($r_0$).
+$E_{\text{restraint}} = \sum_{\text{i}} (K/2)\(r_{i} - r_{i,0})^{2}$
+2 sander parameters are crucial when carrying out restrained minimisation(`ntr=1`):
+- `restraint_wt`: It is equivalent to `K` in the above equation and determines the strength of penalty. Described in kcal/molÅ^2 and ranges from 5-10(weak) to 20-50(moderate) and strong(100-500).
+- `restraintmask`: Chooses the atoms you want to restrain.
+2. **Unrestrained Minimisation(`ntr=2`)**: Remove all restraints and minimise the entire system. Alternatively, you could stage the restrained minimisation in steps, slowly decreasing the restraint weight before going for the unrestrained minimisation.
+
 #### Differences from Docking
+Although Minimisation and Docking are both minima search/optimisation problems which happen when the atoms have 0 kinetic energy, they differ in their approach and their final objectives:
+- Minimisation aims to decrease the potential energy of the entire system(protein + ligand + solvent), whereas docking doesn't account for the solvent and assumes the receptor as a mostly rigid entity.
+- Minimisation optimises the PE as determined by the force field and docking focusses on other scoring functions which prioritises speed over realistic behavior. It predicts a binding affinity for finding the best ligand pose.
+- Minimisation makes small increments/displacements to original coordinated to find a minima in the topographical vicinity, thereby assuming that the structure is already close to one. Docking is more useful when trying to find the best binding pose.
+> It is for this very reason that we would be using docked poses as our starting coordinates for our MD simulation.
 
 ### Thermalisation(Heating)
 #### Rationale behind Thermalisation
-#### Implementation in AMBER
+Minimisation achieves a low PE state but the kinetic energy of atoms is 0. This contradicts with the kinetic energy(KE) at room temperature(300K). Hence, in order to carry out simulation we need to bring the molecules at 300K(essentially giving them a velicty) slowly from 0K.
+This increase of temperature is achieved by the use of thermostats like Berendsen(`ntt=1`), Andersen(`ntt=2`), Langevin(`ntt=3`) and Nose-Hoover(`ntt=4`). Langevin thermostat is the most widely used and that is the one we would be using too.
+When a system of molecules is subjected to a heat bath, it turns energy in the form of KE to molecules of the system. To impart KE in computational terms is like trying to emulate this phenomena. Langevin thermostat does this by choosing a subset of atoms randomly and gives them a 'push'(Random force simulating transfer of KE from heat bath) and a dissipation force(similar to friction/damping) which balances the the kicks, thus leading to temperature stabilisation eventually.
+Following equation defines the Langevin Dynamics:
+
+[Equation here]
+
+#### Implementation in AMBER(Fluctuation-Dissipation Theorem)
+The thermal kick has been defined as follows:
+[Equation here]
+The Kronecker-Delta term tells and the Dirac Delta function imply that the expected/average value of R(t) has no relation with [Equation here]. Which, in essence, means that the thermal impulses/pushes/kicks are completely random, emulating molecular collisions.
+Moreover, the Random force increases with T, $m_i$(heavier atoms need stronger pushes) and $/gamma_i$, the collision frequency, which decides the frequency of introduction of the kicks. It is also called coupling constant, since it also measures how affected/coupled is the system with the thermodynamic bath. 
+It is advisable to heat the system with a restraint on the protein-ligand complex to prevent from the protein changing its structure too much.
+
 #### Relevant sander parameters
+**`ntt`**: Thermostat selection.
+**gamma_ln**: Collision Frequency(default = 2). Lower values take more time to reach T0 but give more realistic behaviour.
 
 ### Equilibration
+
 #### Rationale behind Equilibration
+The step of equilibriation is to make the system converge to a stable temperature nad pressure suitable for production runs. Equilibriation stabilises the temperature of the system to a target temperature via a thermostat with the same initial and final temperature. The solvent molecules still be cramped up in the box unevenly. A pressure equilibriation allows for the system to expand the box under constant pressure to execute a density equilibration.
 #### Implementation in AMBER
+It is generally carried out by an initial NVT(using a thermostat just like in thermalisation but `tempi` and `temp0` are equal) followed by a series of NPT runs with decreasing `restraint_wt`. NPT is carried out using a thermostat and a barostat(Pressure coupling) together like Monte Carlo, Parinello-Rahman and Berendsen. These work by adjusting the volume of the system under control pressure. The system's instantaneous pressure is calculated by the virial equation:
+
+[Equation here]
+
+All barostats use this fundamnental equation to convert microscopic forces and system variables to compute macroscopic pressure of the system. The barostats differ by how much complexity(tensor pressure accounts for anisotropic stresses like shear stress on the box) they allow in pressure consideration, how often they compute the virial pressure, how they respond to pressure fluctuations from the target pressure and how they introduce changes to box volume and atom coordinates. If you have had a long, stable NVT in your heating step, it's admissable to skip the NVT equilibriation and go for NPT equilibriation with decreasing `restraint_wt`.
 #### Relevant sander parameters
+-**`ntb`**: 
+  -`=1`: constant volume condition(NVT).
+  -`=2`: constant pressure condition(NPT); allows the box to change the dimensions
+-**`ntt`**: Thermostat selection
+  -`=1`: Berendsen
+  -`=2`: Andersen
+  -`=3`: Langevin
+  -`=4`: Nose-Hoover
+-**`ntp`**: Barostat selection
+  -`=0`: No pressure coupling(NVT)
+  -`=1`: Berendsen 
+  -`=2`: Monte-Carlo 
+  -`=3`: Parinello-Rahman
 
 ### Production
-
+The production run is when the actual 'simulation' takes place and Newton's equations of motion are solved for the force-field along with verlet increments in coordinates and velocity.
 ### File Types in AMBER
 One approach to know about the various types of files with overlapping information is to know them by what they do:
 #### Defining Molecular Structure and Composition  
@@ -143,8 +196,10 @@ Analyzes a MOL2 file’s atom types and bond connectivity to identify missing GA
 
 ### That which we won't cover in this repository
 It is important to know the bounds of our knowledge when starting out, and to that effect, the following will not be discussed here and the reader is referred to more primary sources:
-1. Non-standard residues encountered in protein. These would require custom preparation using parmchk2 and antechamber
+1. Non-standard residues encountered in protein. These would require custom preparation using parmchk2 and antechamber.
 2. Systems with more than one ligand, multiple bound small molecules, or complex environments (e.g., cofactors, substrates, and ions together) are not addressed.
+3. We have used explicit solvent in this protocol. However, implicit solvent(`igb=1`) also gives accurate results if you want to reduce your computation load.
+4. Post simulation analysis is left for some later repository.
 
 ### Steps of the Workflow
 #### Protein Preparation
