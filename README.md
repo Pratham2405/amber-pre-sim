@@ -1,9 +1,56 @@
 # AMBER Pre-Simulation Protocol
 Preparation protocol and production scripts for simulating Protein-Ligand Complex in AMBER - a tutorial with an in-depth introduction to MD Simulations concepts and typical workflow in AMBER.
 
+## Table of Contents
+
+1. [Introduction to AMBER & MD Simulations](#introduction-to-amber--md-simulations)
+    - [Objectives of an MD Simulation](#objectives-of-an-md-simulation)
+    - [Force Fields: What exactly are they?](#force-fields-what-exactly-are-they)
+    - [Approximations in MD Simulations](#approximations-in-md-simulations)
+2. [Minimisation](#minimisation)
+    - [Rationale behind Minimisation](#rationale-behind-minimisation)
+    - [Implementation in AMBER](#implementation-in-amber)
+    - [Differences from Docking](#differences-from-docking)
+3. [Thermalisation (Heating)](#thermalisationheating)
+    - [Rationale behind Thermalisation](#rationale-behind-thermalisation)
+    - [Implementation in AMBER (Fluctuation-Dissipation Theorem)](#implementation-in-amberfluctuation-dissipation-theorem)
+    - [Relevant sander parameters](#relevant-sander-parameters)
+4. [Equilibration](#equilibration)
+    - [Rationale behind Equilibration](#rationale-behind-equilibration)
+    - [Implementation in AMBER](#implementation-in-amber-1)
+    - [Relevant sander parameters](#relevant-sander-parameters-1)
+5. [Production](#production)
+6. [File Types in AMBER](#file-types-in-amber)
+    - [Defining Molecular Structure and Composition](#defining-molecular-structure-and-composition)
+    - [Providing Force Field Parameters](#providing-force-field-parameters)
+    - [Supplying Initial Coordinates and Velocities](#supplying-initial-coordinates-and-velocities)
+    - [Recording Simulation Trajectories](#recording-simulation-trajectories)
+    - [Controlling Simulation Parameters](#controlling-simulation-parameters)
+    - [Storing Analysis and Miscellaneous Data](#storing-analysis-and-miscellaneous-data)
+7. [Important Tools in AMBER](#important-tools-in-amber)
+    - [LEaP](#leap)
+    - [sander/pmemd](#sanderpmemd)
+    - [pdb4amber](#pdb4amber)
+    - [ambpdb](#ambpdb)
+    - [antechamber](#antechamber)
+    - [parmchk2](#parmchk2)
+8. [Overall Workflow (Flowchart Reference)](#overall-workflow-flowchart-reference)
+9. [That which we won't cover in this repository](#that-which-we-wont-cover-in-this-repository)
+10. [Steps of the Workflow](#steps-of-the-workflow)
+    - [Protein Preparation](#protein-preparation)
+    - [Ligand Preparation](#ligand-preparation)
+    - [LEaP](#leap-1)
+    - [Minimisation](#minimisation-1)
+    - [Post-Minimisation](#post-minimisation)
+    - [Post-Production Analysis](#post-production-analysis)
+    - [Tools Used in this Protocol](#tools-used-in-this-protocol)
+    - [Citations of Tools and Softwares](#citations)
+
 ## Introduction to AMBER & MD Simulations
 ### Objectives of an MD Simulation
 A Molecular Dynamics Simulation is an attempt to solve nature on our computers by approximating how microscopic interactions work and how they affect the dynamics of atoms in a molecular system. Although MD Simulations, like any other solution, is also wrought with problems and challenges of its own, it is still the most predictive tool we have short of _in vitro_ experimentation.
+
+--- 
 
 ### Force Fields: What exactly are they?
 A force field in an MD Simulation software defines the characteristic potential energy of conventional/unconventional atoms and their bonds via equations and paramters which it stores in text files(`.dat` for parameters, `.frcmod` for modified parameters and `.lib` for topology template). In doing so, the force on each atom can be calculated by the gradient(in the direction of maximum change) of the potential energy. 
@@ -24,11 +71,15 @@ $E_{\text{nonbond}} = \sum_{i<j} \left[ \epsilon_{ij} \left( \left(\frac{R_{\min
 
 The parameter sets for different atoms are determined by various experimental techniques to ensure accurate predictions which are closer to reality - Raman spectroscopy, infrared (IR) spectroscopy, X-ray crystallography, nuclear magnetic resonance (NMR) spectroscopy and other methods.
 
+---
+
 ### Approximations in MD Simulations:
 - Classical Mechanics is considered where atoms are approximated to point particles and newtonian mechanics is only considered.
 - Only pairwise interactions are considered.
 - Simple harmonic motion for bonds and angles considered.
 - Fixed partial charges instead of assigning them dynamically.
+
+---
 
 ### Minimisation
 Incremental movement of the atoms under the influence of the gradient of Potential Energy(PE) _in vacuo_ in search of a global minima of PE.
@@ -56,6 +107,8 @@ Although Minimisation and Docking are both minima search/optimisation problems w
 - Minimisation makes small increments/displacements to original coordinated to find a minima in the topographical vicinity, thereby assuming that the structure is already close to one. Docking is more useful when trying to find the best binding pose.
 > It is for this very reason that we would be using docked poses as our starting coordinates for our MD simulation.
 
+---
+
 ### Thermalisation(Heating)
 #### Rationale behind Thermalisation
 Minimisation achieves a low PE state but the kinetic energy of atoms is 0. This contradicts with the kinetic energy(KE) at room temperature(300K). Hence, in order to carry out simulation we need to bring the molecules at 300K(essentially giving them a velicty) slowly from 0K.
@@ -77,6 +130,8 @@ It is advisable to heat the system with a restraint on the protein-ligand comple
 #### Relevant sander parameters
 - **`ntt`**: Thermostat selection.
 - **`gamma_ln`**: Collision Frequency(default = 2). Lower values take more time to reach T0 but give more realistic behaviour.
+
+---
 
 ### Equilibration
 
@@ -131,6 +186,7 @@ This control file specifies MD protocol parameters (time step, temperature coupl
 **Extensions:** `.dat`, `.out`, `.log` 
 General-purpose data, log, and analysis output files. Most `.dat` files store analysis results, but files like `parm10.dat` carry core force field tables loaded by LEaP internally.
 
+---
 
 ### Important Tools in AMBER
 #### LEaP
@@ -193,9 +249,12 @@ Automatically assigns GAFF/GAFF2 atom types, bond types, and AM1-BCC charges to 
 #### `parmchk2`
 Analyzes a MOL2 file’s atom types and bond connectivity to identify missing GAFF/GAFF2 parameters, then generates an `.frcmod` file with estimated bond, angle, dihedral, and nonbonded parameters. It ensures non-standard residues receive reasonable force field parameter values before LEaP integration 
 
+---
 
 ### Overall Workflow
 [Image of the flowchart]
+
+---
 
 ### That which we won't cover in this repository
 It is important to know the bounds of our knowledge when starting out, and to that effect, the following will not be discussed here and the reader is referred to more primary sources:
@@ -203,6 +262,8 @@ It is important to know the bounds of our knowledge when starting out, and to th
 2. Systems with more than one ligand, multiple bound small molecules, or complex environments (e.g., cofactors, substrates, and ions together) are not addressed.
 3. We have used explicit solvent in this protocol. However, implicit solvent(`igb=1`) also gives accurate results if you want to reduce your computation load.
 4. Post simulation analysis is left for some later repository.
+
+---
 
 ### Steps of the Workflow
 #### Protein Preparation
@@ -300,3 +361,58 @@ pmemd.MPI -O -i prod.in -o prod.out -p system.prmtop -c eq.rst -r prod.rst -x pr
 
 #### Post-Production Analysis
 For the sake of brevity of this repository, there will be a separate repository to document the post-simulation analysis very soon.
+
+---
+
+## Tools Used in this Protocol
+
+Below are the main computational tools described in this protocol, each with a citation to authoritative AMBER documentation or relevant literature.
+
+- **LEaP / tleap:**  
+  Central preparation tool in AMBER: combines structural and force field files, assigns parameters and atom types, and outputs simulation-ready topology and coordinate files. See: [AMBER 2023 Manual, Section 16.1][1].
+
+- **sander / pmemd:**  
+  Main simulation engines for minimization, equilibration, and production dynamics; they integrate equations of motion and produce trajectories. See: [AMBER 2023 Manual, Section 20][2].
+
+- **pdb4amber:**  
+  Cleans and standardizes PDB files for use in LEaP, removes problematic lines, and prepares consistent residue naming and atom entries. See: [AMBER Tools 22 Manual, Section 14.5][3].
+
+- **ambpdb:**  
+  Converts AMBER topology and coordinate files back into PDB format to aid in visualization and system checking. See: [AMBER Tools 22 Manual, Section 14.6][3].
+
+- **antechamber:**  
+  Prepares small-molecule/ligand parameterization using GAFF/GAFF2, assigning atom types, charges, and generating MOL2/other input files for LEaP. See: Wang et al., J. Comput. Chem., 2004[4].
+
+- **parmchk2:**  
+  Inspects ligand structure/parameters, locates missing force field terms, and creates an `.frcmod` file for full compatibility. See: [AMBER Tools 22 Manual, Section 10.4][3].
+
+- **openbabel (obabel):**  
+  Converts and manipulates structure files between chemical formats and adds/removes hydrogens. See: O'Boyle et al., J. Cheminformatics, 2011[5].
+
+- **reduce:**  
+  Adds/optimizes hydrogens in macromolecular structures, correcting sidechain orientations and hydrogen bonding. See: Word et al., J. Mol. Biol., 1999[6].
+
+- **H++ server:**  
+  Assigns protonation states to protein residues based on user-supplied pH, outputting simulation-ready files. See: Anandakrishnan et al., Nucleic Acids Res., 2012[7].
+
+- **PyMOL / VMD:**  
+  Widely used visualization tools for structural and trajectory viewing, essential for system validation and quality assessment. See: Schrödinger, LLC, PyMOL (2023)[8]; Humphrey et al., J. Mol. Graphics, 1996[9].
+
+- **I-TASSER, Swissmodel, MODELER:**  
+  Protein structure prediction and homology modeling for targets lacking a solved experimental structure. See: Yang et al., Nat. Methods, 2015[10]; Waterhouse et al., Nucleic Acids Res., 2018[11]; Šali & Blundell, J. Mol. Biol., 1993[12].
+
+---
+
+## Citations:
+1. AMBER 2023 Reference Manual, Section 16.1 (LEaP), https://ambermd.org/doc12/Amber23.pdf  
+2. AMBER 2023 Reference Manual, Section 20 (sander/pmemd), https://ambermd.org/doc12/Amber23.pdf  
+3. AMBER Tools 22 Manual (pdb4amber, ambpdb, parmchk2), https://ambermd.org/doc12/AmberTools22.pdf  
+4. Wang, J., et al. "Development and testing of a general amber force field." J. Comput. Chem. 25, 1157–1174 (2004).  
+5. O'Boyle, N. M., et al. "Open Babel: An open chemical toolbox." J. Cheminform. 3:33 (2011).  
+6. Word, J. M., et al. "Asparagine and glutamine: using hydrogen atom contacts in the choice of side-chain amide orientation." J. Mol. Biol. 285, 1735–1747 (1999).  
+7. Anandakrishnan, R., et al. "H++ 3.0: automating pK prediction and the preparation of biomolecular structures for atomistic molecular modeling and simulations." Nucleic Acids Res. 40, W537–W541 (2012).  
+8. Schrödinger, LLC. "The PyMOL Molecular Graphics System, Version 2.0" (2023).  
+9. Humphrey, W., et al. "VMD: Visual molecular dynamics." J. Mol. Graphics 14, 33–38 (1996).  
+10. Yang, J., et al. "The I-TASSER Suite: protein structure and function prediction." Nat. Methods 12, 7–8 (2015).  
+11. Waterhouse, A., et al. "SWISS-MODEL: homology modelling of protein structures and complexes." Nucleic Acids Res. 46, W296–W303 (2018).  
+12. Šali, A. & Blundell, T. L. "Comparative protein modelling by satisfaction of spatial restraints." J. Mol. Biol. 234, 779–815 (1993).
