@@ -1,0 +1,18 @@
+Minimization of Solvent
+ &cntrl
+ imin=1,ntmin=1,
+ maxcyc=10000,
+ ncyc=5000,
+ ntb=1,
+ cut=10.0,
+ igb=0,
+ ntpr=500,
+ ntr=1,
+ ntwx=500,
+ ntwr=500,
+ ntx=1,
+ restraintmask="!:WAT,Na+,Cl-",
+ restraint_wt=10.0,
+&end
+ /
+
