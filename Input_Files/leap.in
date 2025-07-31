@@ -1,0 +1,16 @@
+source leaprc.protein.ff19SB
+source leaprc.gaff2
+source leaprc.water.tip3p
+loadamberparams frcmod.ionsjc_tip3p
+loadamberprep 0.160_MD.prepi    # Correct command for prepi files
+loadamberparams 0.160_MD.frcmod # Correct command for frcmod files
+ligand = loadmol2 0.160_MD.mol2
+protein = loadpdb 2WZX_clean.pdb
+complex = combine {protein ligand}
+check complex
+solvateoct complex TIP3PBOX 12.0
+addIons complex Cl- 0
+addions complex Na+ 0
+saveamberparm complex system.prmtop system.inpcrd
+savepdb complex system.pdb
+quit
