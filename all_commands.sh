@@ -1,5 +1,4 @@
-# This script collates the important commands require for AMBER simulations of a protein-ligand complex, including 
-# parameterization and complex formation with a protein.
+# This file contains all the commands used in this tutorial.
 
 #OBabel Command for converting PDBQT to SDF format.
 obabel -ipdbqt 0.160_out.pdbqt -osdf -O 0.160_MD.sdf
