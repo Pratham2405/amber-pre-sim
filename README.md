@@ -22,7 +22,6 @@ $E_{\text{torsion}} = \sum_{\text{torsions}} \frac{V_{n}}{2}\\left[1 + \cos(n\ph
 #### Non-bonded Interactions  
 $E_{\text{nonbond}} = \sum_{i<j} \left[ \epsilon_{ij} \left( \left(\frac{R_{\min,ij}}{r_{ij}}\right)^{12} - 2 \left(\frac{R_{\min,ij}}{r_{ij}}\right)^6 \right) + \frac{q_i q_j}{4 \pi \epsilon_0 r_{ij}} \right]$
 
-
 The parameter sets for different atoms are determined by various experimental techniques to ensure accurate predictions which are closer to reality - Raman spectroscopy, infrared (IR) spectroscopy, X-ray crystallography, nuclear magnetic resonance (NMR) spectroscopy and other methods.
 
 ### Approximations in MD Simulations:
@@ -43,8 +42,8 @@ Generally, minimisation is carried out in 2 steps:
 1. **Restrained Minimisation(`ntr=1`)**: It is advisable to restrain the protein-ligand complex for the first minimisation run. This is useful because we don't need the protein to undergo drastic changes in its backbone structure due to the effects of the solvent first because the solvent itself has not been minimised and just packed into the solvent box, facing steric clashes among itself. All of this can lead to drastic minimisation steps which might move the protein atoms more than is required for minimisation.
 AMBER applies a harmonic restraint term to the restrained atoms in the form of a quadratic penalty term which penalises deviation of atoms from their initial coordinates($r_0$).
 
- $E_{\text{restraint}} = \sum_{\text{i}} (K/2)\(r_{i} - r_{i,0})^{2}$
-
+ $E_{\text{restraint}} = \sum_{\text{i}} (K/2)(r_{i} - r_{i,0})^{2}$
+ 
 2 sander parameters are crucial when carrying out restrained minimisation(`ntr=1`):
 - `restraint_wt`: It is equivalent to `K` in the above equation and determines the strength of penalty. Described in kcal/molÅ^2 and ranges from 5-10(weak) to 20-50(moderate) and strong(100-500).
 - `restraintmask`: Chooses the atoms you want to restrain.
@@ -77,7 +76,7 @@ It is advisable to heat the system with a restraint on the protein-ligand comple
 
 #### Relevant sander parameters
 - **`ntt`**: Thermostat selection.
-- **gamma_ln**: Collision Frequency(default = 2). Lower values take more time to reach T0 but give more realistic behaviour.
+- **`gamma_ln`**: Collision Frequency(default = 2). Lower values take more time to reach T0 but give more realistic behaviour.
 
 ### Equilibration
 
