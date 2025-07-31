@@ -28,23 +28,5 @@ parmchk2 -i 0.160_MD.mol2 -f mol2 -o 0.160_MD.frcmod -at gaff2
 #prepi file preparation: PREPI files contain residue connectivity and internal coordinate information for non-standard residues.
 antechamber -i 0.160_MD.mol2 -fi mol2 -o 0.160_MD.prepi -fo prepi
 
-#Combine protein and ligand in tleap.in as below:
-tleap
-source leaprc.protein.ff19SB
-source leaprc.gaff2
-source leaprc.water.tip3p
-loadamberparams frcmod.ionsjc_tip3p
-loadamberprep ligand.prepi    
-loadamberparams ligand.frcmod 
-ligand = loadmol2 ligand.mol2
-protein = loadpdb protein.pdb
-complex = combine {protein ligand}
-check complex
-solvateoct complex TIP3PBOX 12.0
-addIons complex Cl- 0 Na+ 0
-saveamberparm complex system.prmtop system.inpcrd
-savepdb complex system.pdb
-quit
-
-#Run command
+#Run leap.in
 tleap -f leap.in > leap.log
